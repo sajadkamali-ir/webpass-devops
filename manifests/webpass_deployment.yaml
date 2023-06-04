@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webpass-deployment
+  labels:
+    app: webpass
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webpass
+  template:
+    metadata:
+      labels:
+        app: webpass
+    spec:
+      containers:
+      - name: webpass-panel
+        image: docker.io/sajademperor/webpass_frontend_site:24
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "1000m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+

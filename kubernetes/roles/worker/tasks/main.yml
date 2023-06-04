@@ -1,0 +1,8 @@
+- name: Copy token to remote server
+  become: yes
+  copy:
+    src: ./node-token
+    dest: /root
+
+- name: Join node to cluster 
+  shell: curl -sfL https://get.k3s.io | K3S_URL=https://{{ masterNodes.master1 }}:6443 K3S_TOKEN=$(cat /root/node-token) sh -

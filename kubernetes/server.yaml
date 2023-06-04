@@ -1,0 +1,30 @@
+---
+#initial update for all hosts in the cluster
+- hosts: all
+  become: true
+  pre_tasks:
+  - name: install python and pip 
+    apt:
+      name:
+        - python3
+        - pip
+        
+
+# Comment the following roles in case you don't want to install one or some of them.
+# Each role will install a service on the server.
+- hosts: all
+  become: true
+  roles:
+  - base
+
+- hosts: masters
+  become: true
+  roles:
+  - master
+
+- hosts: workers
+  become: true
+  roles:
+  - worker
+
+

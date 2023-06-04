@@ -1,0 +1,33 @@
+  - name: install the master node
+    shell: curl -sfL https://get.k3s.io | sh -
+
+  - name: Wait for 2 minutes to init the master node
+    pause:
+      seconds: 120
+  
+  - name: Get the token
+    fetch:
+      src: /var/lib/rancher/k3s/server/node-token
+      dest: ../
+      flat: yes
+
+  - name: Get the token
+    fetch:
+      src: /etc/rancher/k3s/k3s.yaml
+      dest: ../
+      flat: yes
+
+  - name: Check K3s configuration
+    become: yes
+    shell: k3s check-config
+    register: k3s_config_check_output
+    ignore_errors: true
+
+  - name: Report errors (if any) from K3s config check output
+    fail:
+      msg: "{{ k3s_config_check_output.stderr }}"
+    when:
+      - k3s_config_check_output.rc !=0 
+      - k3s_config_check_output.stderr is defined
+
+  

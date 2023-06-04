@@ -1,0 +1,11 @@
+---
+# Checkout the inventory file as well
+
+#server IP address and domain name and ports
+masterNodes:
+  master1: 192.168.122.10
+
+workerNodes:
+  worker1: 192.168.122.20
+  worker2: 192.168.122.30
+  worker3: 192.168.122.40

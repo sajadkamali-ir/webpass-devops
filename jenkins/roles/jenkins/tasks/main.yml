@@ -1,0 +1,55 @@
+  - name: install Java
+    apt:
+      name:
+        - default-jre
+        - gnupg2 
+        - apt-transport-https 
+
+  - name: install apt key
+    shell: curl https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+
+  - name: fix sources.list
+    shell: echo "deb https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list
+
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+
+  - name: Install Jenkins
+    apt:
+      name:
+        - jenkins
+
+  - name: install docker 
+    apt:
+      name:
+        - docker.io
+
+  - name: Give docker privilages to jenkins user
+    user:
+      name: jenkins
+      groups:
+        - docker
+      append: yes
+
+  - name: Get the kube file
+    copy:  
+      src: ../../../../k3s.yaml
+      dest: /var/lib/jenkins/.k3s.yaml
+  
+  - name: Fix the kube file permission
+    file:
+      path: /var/lib/jenkins/.k3s.yaml
+      owner: jenkins
+      group: jenkins
+
+  - name: add kubeconfig
+    shell: echo "export KUBECONFIG=/var/lib/jenkins/.k3s.yaml" >> /var/lib/jenkins/.bashrc
+
+  - name: move kubectl 
+    copy:
+      src: ../../../kubectl
+      dest: /root
+
+  - name: install kubectl
+    shell: install -o root -g root -m 0755 /root/kubectl /usr/local/bin/kubectl

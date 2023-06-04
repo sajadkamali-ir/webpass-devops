@@ -1,0 +1,9 @@
+- name: Install the base system
+  apt:
+    name:
+      - tmux
+      - vim-nox
+      - unzip
+      - curl
+      - wget
+      - sudo

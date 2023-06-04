@@ -1,0 +1,10 @@
+- name: Install the base system
+  apt:
+    name:
+      - tmux
+      - gdebi
+      - vim-nox
+      - unzip
+      - git
+      - curl
+      - wget
